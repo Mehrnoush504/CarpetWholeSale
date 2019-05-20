@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.launcher.myapplication.DesignNewCarpet">
+
+    <ImageView
+        android:id="@+id/incarpetimageV"
+        android:layout_width="103dp"
+        android:layout_height="139dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/choosebtn"
+        app:layout_constraintEnd_toStartOf="@+id/outcarpetimageV"
+        app:layout_constraintHorizontal_bias="0.373"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/holo_blue_bright" />
+
+    <ImageView
+        android:id="@+id/outcarpetimageV"
+        android:layout_width="103dp"
+        android:layout_height="139dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/savecapet2btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/holo_blue_bright" />
+
+    <Button
+        android:id="@+id/choosebtn"
+        android:layout_width="106dp"
+        android:layout_height="38dp"
+        android:layout_marginBottom="248dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="73dp"
+        android:text="choose "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/savecapet2btn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/savecapet2btn"
+        android:layout_width="106dp"
+        android:layout_height="38dp"
+        android:layout_marginBottom="248dp"
+        android:layout_marginRight="56dp"
+        android:text="save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>

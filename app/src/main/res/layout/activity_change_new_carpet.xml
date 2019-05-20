@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.launcher.myapplication.ChangeNewCarpet">
+
+    <ImageView
+        android:id="@+id/carpet1imageV"
+        android:layout_width="89dp"
+        android:layout_height="111dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/choosebtn"
+        app:layout_constraintEnd_toStartOf="@+id/carpet2imageV"
+        app:layout_constraintHorizontal_bias="0.607"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:color/holo_blue_bright" />
+
+    <ImageView
+        android:id="@+id/carpet2imageV"
+        android:layout_width="89dp"
+        android:layout_height="111dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/choose2btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:color/holo_blue_bright" />
+
+    <ImageView
+        android:id="@+id/carpet3imageV"
+        android:layout_width="89dp"
+        android:layout_height="111dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/savecarpetbtn"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@android:color/holo_blue_bright" />
+
+    <Button
+        android:id="@+id/choosebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="92dp"
+        android:text="choose1"
+        app:layout_constraintBottom_toTopOf="@+id/carpet3imageV"
+        app:layout_constraintEnd_toStartOf="@+id/choose2btn"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/choose2btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginRight="68dp"
+        android:text="choose2"
+        app:layout_constraintBottom_toTopOf="@+id/carpet3imageV"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/savecarpetbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="52dp"
+        android:text="save carpet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>
