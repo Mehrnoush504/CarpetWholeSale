@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.launcher.myapplication.MainActivity">
+
+    <Button
+        android:id="@+id/customerbtn"
+        android:layout_width="101dp"
+        android:layout_height="98dp"
+        android:layout_marginTop="108dp"
+        android:text="ورود خریدار"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/companybtn"
+        android:layout_width="101dp"
+        android:layout_height="98dp"
+        android:layout_marginTop="8dp"
+        android:text="ورود فروشنده"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customerbtn"
+        app:layout_constraintVertical_bias="0.326" />
+
+</android.support.constraint.ConstraintLayout>

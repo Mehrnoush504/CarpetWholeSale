@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CarpetWholeSale</string>
+    <string name="design_tab_name">طراحی فرش جدید</string>
+    <string name="change_tab_name">تغییر فرش</string>
+    <string name="choose1carpet_name">انتخاب فرش نخست</string>
+    <string name="choose2carpet_name">انتخاب فیلتر</string>
+
+</resources>
+
