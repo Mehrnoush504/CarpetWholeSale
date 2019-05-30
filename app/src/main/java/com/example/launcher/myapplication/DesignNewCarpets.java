@@ -17,6 +17,7 @@ import android.widget.TextView;
  */
 
 public class DesignNewCarpets extends Fragment {
+    public static String TITLE = "طراحی فرش جدید";
     Button submit, submit_neighbouring, set;
     TextView result;
     EditText neighbour1, neighbour2, areas;

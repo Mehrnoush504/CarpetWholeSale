@@ -3,8 +3,6 @@ package com.example.launcher.myapplication;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.INotificationSideChannel;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,11 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.launcher.myapplication.Basic.Knapsack;
-import com.example.launcher.myapplication.Models.AvailableCarpetsAdapter;
+import com.example.launcher.myapplication.Adapters.AvailableCarpetsAdapter;
 import com.example.launcher.myapplication.Models.Carpet;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class ShoppingCarpet extends Fragment {
     Button sumbitMoney;

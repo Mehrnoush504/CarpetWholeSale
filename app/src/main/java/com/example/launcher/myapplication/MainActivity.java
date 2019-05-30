@@ -8,16 +8,17 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button company;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button companyBtn = findViewById(R.id.customerbtn);
-        companyBtn.setOnClickListener(new View.OnClickListener() {
+        company = findViewById(R.id.companybtn);
+        company.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), NewCarpet.class);
+                Intent intent = new Intent(getApplicationContext(), Seller.class);
                 startActivity(intent);
             }
         });
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         customerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Options.class);
+                Intent intent = new Intent(getApplicationContext(), Buyer.class);
                 startActivity(intent);
             }
         });

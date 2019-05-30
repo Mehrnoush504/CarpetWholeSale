@@ -76,6 +76,7 @@ public class Strassen {
                 C[i][j] = CPrep[i][j];
             }
         }
+
         return C;
     }
 
@@ -167,8 +168,8 @@ public class Strassen {
     public int[] main(int arr1[][], int arr2[][]) {
         java.util.Scanner input = new java.util.Scanner(System.in);
         int n = arr1.length;
-        ArrayList<ArrayList<Integer>> A = new ArrayList<ArrayList<Integer>>(n);
-        ArrayList<ArrayList<Integer>> B = new ArrayList<ArrayList<Integer>>(n);
+        ArrayList<ArrayList<Integer>> A = new ArrayList<>(n);
+        ArrayList<ArrayList<Integer>> B = new ArrayList<>(n);
 
 
         for (int i = 0; i < n; i++) {
@@ -188,6 +189,7 @@ public class Strassen {
             }
             B.add(b);
         }
+
 
         int[][] C = Strassen(A, B);
         int arr[] = new int[C.length * C.length];

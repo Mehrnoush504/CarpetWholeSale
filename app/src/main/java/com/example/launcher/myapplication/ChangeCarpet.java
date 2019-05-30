@@ -29,6 +29,7 @@ public class ChangeCarpet extends Fragment {
 
     private static final int GET_IMAGE_CODE_CARPET1 = 200;
     private static final int GET_IMAGE_CODE_CARPET2 = 201;
+    public static String TITLE = "تغییر فرش";
     Button combine, choose_carpet, choose_filter;
     ImageView carpet, filter, product;
     Bitmap carpet_bitmap, filter_bitmap, product_bitmap;
@@ -100,12 +101,38 @@ public class ChangeCarpet extends Fragment {
     }
 
     private void setProduct() {
+        prepareCarpets();
         int arr1[][] = convert_to_arr(carpet_bitmap);
         int arr2[][] = convert_to_arr(filter_bitmap);
         Strassen strassen = new Strassen();
         int product_arr[] = strassen.main(arr1, arr2);
         product_bitmap = convert_to_bitmap(product_arr);
         product.setImageBitmap(product_bitmap);
+    }
+
+    private void prepareCarpets() {
+        if (carpet_bitmap.getWidth() > filter_bitmap.getWidth()) {
+            if (carpet_bitmap.getHeight() > filter_bitmap.getHeight()) {
+                carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, filter_bitmap.getWidth(), filter_bitmap.getHeight(), false);
+            } else {
+                filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, filter_bitmap.getWidth(), carpet_bitmap.getHeight(), false);
+                carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, filter_bitmap.getWidth(), carpet_bitmap.getHeight(), false);
+            }
+        } else {
+            if (carpet_bitmap.getHeight() > filter_bitmap.getHeight()) {
+                filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, carpet_bitmap.getWidth(), filter_bitmap.getHeight(), false);
+                carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, carpet_bitmap.getWidth(), filter_bitmap.getHeight(), false);
+            } else {
+                filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, carpet_bitmap.getWidth(), carpet_bitmap.getHeight(), false);
+            }
+        }
+        if (filter_bitmap.getHeight() > filter_bitmap.getWidth()) {
+            filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, filter_bitmap.getWidth(), filter_bitmap.getWidth(), false);
+            carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, carpet_bitmap.getWidth(), carpet_bitmap.getWidth(), false);
+        } else {
+            filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, filter_bitmap.getHeight(), filter_bitmap.getHeight(), false);
+            carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, carpet_bitmap.getHeight(), carpet_bitmap.getHeight(), false);
+        }
     }
 
     private Bitmap convert_to_bitmap(int[] product_arr) {
@@ -118,7 +145,7 @@ public class ChangeCarpet extends Fragment {
         int arr[][] = new int[carpet_bitmap.getHeight()][carpet_bitmap.getWidth()];
         for (int i = 0; i < carpet_bitmap.getHeight(); i++) {
             for (int j = 0; j < carpet_bitmap.getWidth(); j++) {
-                arr[i][j] = carpet_bitmap.getPixel(i, j);
+                arr[i][j] = carpet_bitmap.getPixel(j, i);
             }
         }
         return arr;

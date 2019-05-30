@@ -1,4 +1,4 @@
-package com.example.launcher.myapplication.Models;
+package com.example.launcher.myapplication.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.launcher.myapplication.Models.Carpet;
 import com.example.launcher.myapplication.R;
 
 import java.util.ArrayList;
