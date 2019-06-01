@@ -1,29 +1,31 @@
 package com.example.launcher.myapplication;
 
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Navigation extends FragmentActivity implements OnMapReadyCallback {
+public class Navigation extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         preProcess();
+        View view = inflater.inflate(R.layout.navigation,container,false);
+        return view;
     }
+
 
     private void preProcess() {
         // TODO: Complete this method in order to allocate markets and make the graph to using algorithms
@@ -56,7 +58,7 @@ public class Navigation extends FragmentActivity implements OnMapReadyCallback {
                 markerOptions.draggable(true);
                 mMap.clear();
                 mMap.addMarker(markerOptions);
-                getBestWay(markerOptions.getPosition().latitude,markerOptions.getPosition().longitude);
+                getBestWay(markerOptions.getPosition().latitude, markerOptions.getPosition().longitude);
             }
         });
     }

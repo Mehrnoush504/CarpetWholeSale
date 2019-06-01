@@ -8,9 +8,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.example.launcher.myapplication.ChangeCarpet;
 import com.example.launcher.myapplication.DesignNewCarpets;
 
-public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+public class SellerViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    public ViewPagerAdapter(FragmentManager fm) {
+    public SellerViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
