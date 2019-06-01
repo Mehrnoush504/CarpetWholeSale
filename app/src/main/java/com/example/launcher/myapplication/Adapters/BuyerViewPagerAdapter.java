@@ -1,5 +1,6 @@
 package com.example.launcher.myapplication.Adapters;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -28,6 +29,18 @@ public class BuyerViewPagerAdapter extends FragmentStatePagerAdapter{
     @Override
     public int getCount() {
         return 3;
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if (position == 0){
+            return ShoppingCarpet.TITLE;
+        }else if (position == 1){
+            return SearchingCarpets.TITLE;
+        }else{
+            return Navigation.TITLE;
+        }
     }
 }
 

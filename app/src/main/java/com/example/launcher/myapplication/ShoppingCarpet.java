@@ -24,6 +24,7 @@ public class ShoppingCarpet extends Fragment {
     EditText moneyText;
     AvailableCarpetsAdapter availableCarpetsAdapter;
     int money = 0;
+    public static final String TITLE = "خرید";
 
     @Nullable
     @Override
