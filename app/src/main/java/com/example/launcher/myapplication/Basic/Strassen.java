@@ -1,5 +1,7 @@
 package com.example.launcher.myapplication.Basic;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -166,7 +168,6 @@ public class Strassen {
     }
 
     public int[] main(int arr1[][], int arr2[][]) {
-        java.util.Scanner input = new java.util.Scanner(System.in);
         int n = arr1.length;
         ArrayList<ArrayList<Integer>> A = new ArrayList<>(n);
         ArrayList<ArrayList<Integer>> B = new ArrayList<>(n);
@@ -192,6 +193,7 @@ public class Strassen {
 
 
         int[][] C = Strassen(A, B);
+        Log.i("TAG", String.valueOf(C[55][89]));
         int arr[] = new int[C.length * C.length];
         for (int i = 0; i < C.length; i++) {
             for (int j = 0; j < C.length; j++) {

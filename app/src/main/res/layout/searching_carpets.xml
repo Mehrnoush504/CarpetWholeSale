@@ -11,9 +11,12 @@
         android:layout_width="100dp"
         android:layout_height="127dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="49dp"
         app:layout_constraintBottom_toTopOf="@+id/choosebtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.367"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -24,15 +27,15 @@
         android:layout_width="100dp"
         android:layout_height="127dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="28dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="49dp"
-        app:layout_constraintBottom_toTopOf="@+id/outcarpet4imageV"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
-        app:layout_constraintStart_toEndOf="@+id/incarpet1imageV"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/outcarpet4imageV"
+        app:layout_constraintTop_toBottomOf="@+id/choosebtn"
+        app:layout_constraintVertical_bias="0.205"
         app:srcCompat="@android:color/holo_blue_bright" />
 
     <ImageView
@@ -40,9 +43,12 @@
         android:layout_width="100dp"
         android:layout_height="127dp"
         android:layout_marginBottom="116dp"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choosebtn"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@android:color/holo_blue_bright" />
 
     <ImageView
@@ -50,23 +56,20 @@
         android:layout_width="100dp"
         android:layout_height="127dp"
         android:layout_marginBottom="116dp"
-        android:layout_marginEnd="37dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toEndOf="@+id/outcarpet3imageV"
         app:srcCompat="@android:color/holo_blue_bright" />
 
     <Button
         android:id="@+id/choosebtn"
         android:layout_width="96dp"
-        android:layout_height="38dp"
-        android:layout_marginBottom="40dp"
-        android:layout_marginEnd="224dp"
-        android:layout_marginStart="64dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="36dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="choose"
-        app:layout_constraintBottom_toTopOf="@+id/outcarpet3imageV"
+        app:layout_constraintBottom_toTopOf="@+id/outcarpet4imageV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

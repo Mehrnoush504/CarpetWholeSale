@@ -43,6 +43,7 @@ public class ChangeCarpet extends Fragment {
         choose_filter = view.findViewById(R.id.choose2btn);
         carpet = view.findViewById(R.id.carpet1image);
         filter = view.findViewById(R.id.carpet2image);
+
         product = view.findViewById(R.id.carpet3image);
         choose_carpet.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 /**
  * @author Amir Muhammad
  */
@@ -22,6 +25,8 @@ public class DesignNewCarpets extends Fragment {
     TextView result;
     EditText neighbour1, neighbour2, areas;
     int graph_size = 0, matrix[][];
+    LinkedList<Integer> adjListArray[];
+
 
     @Nullable
     @Override
@@ -42,6 +47,10 @@ public class DesignNewCarpets extends Fragment {
                 }
                 graph_size = Integer.parseInt(areas.getText().toString());
                 matrix = new int[graph_size][graph_size];
+                adjListArray = new LinkedList[graph_size];
+                for (int i = 0; i < graph_size; i++) {
+                    adjListArray[i] =  new LinkedList<>();
+                }
             }
         });
         submit_neighbouring.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +94,13 @@ public class DesignNewCarpets extends Fragment {
 
     private String getNeededColors() {
         int needed = 0;
+        // TODO: Implement graph coloring algorithm
         return String.valueOf(needed);
     }
 
     private void joinNodes(Integer node1, Integer node2) {
+        adjListArray[node1].add(node2);
+        adjListArray[node2].add(node1);
+        matrix[node1][node2] = matrix[node2][node1] = 1;
     }
 }
