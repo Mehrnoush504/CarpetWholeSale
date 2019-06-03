@@ -56,6 +56,7 @@ public class ShoppingCarpet extends Fragment {
     private void displayRecyclerView(int money) {
         Knapsack knapsack = new Knapsack();
         carpetDBManager = new CarpetDBManager(getContext());
+        carpetDBManager.open();
         ArrayList<Carpet> carpets = carpetDBManager.getALLCarpets();
         // TODO: arrayList should be caught from database
         Hashtable<Integer,Integer> options = knapsack.main(money, carpets);
@@ -73,6 +74,7 @@ public class ShoppingCarpet extends Fragment {
             }
         }
         resText.setText(res.toString());
+        carpetDBManager.close();
         availableCarpetsAdapter = new AvailableCarpetsAdapter(getContext(), available);
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);

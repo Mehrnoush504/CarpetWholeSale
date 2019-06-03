@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 
 import com.example.launcher.myapplication.Models.Carpet;
@@ -13,9 +14,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class CarpetDBManager {
-    SQLiteOpenHelper sqLiteOpenHelper;
-    SQLiteDatabase sqLiteDatabase;
-    String column_names [] = new String[]{"id",SqliteHelper.PRICE, SqliteHelper.PATH};
+    private SQLiteOpenHelper sqLiteOpenHelper;
+    private SQLiteDatabase sqLiteDatabase;
+    private String column_names [] = new String[]{"id",SqliteHelper.PRICE, SqliteHelper.PATH};
 
     public CarpetDBManager(Context context) {
         this.sqLiteOpenHelper = new SqliteHelper(context,SqliteHelper.DB_NAME,null,1);
@@ -64,6 +65,7 @@ public class CarpetDBManager {
                 carpet.setPrice(cursor.getInt(cursor.getColumnIndex(SqliteHelper.PRICE)));
                 carpet.setPath(cursor.getString(cursor.getColumnIndex(SqliteHelper.PATH)));
                 list.add(carpet);
+                Log.i("TAG","getAll : " + carpet.getPrice() + " , " + carpet.getPath());
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -71,11 +73,13 @@ public class CarpetDBManager {
     }
 
 
-
+    public void dropTable(){
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SqliteHelper.CARPET_TABLE_NAME);
+    }
     public void addCarpet(Carpet carpet) {
         ContentValues values = new ContentValues();
         values.put(SqliteHelper.PRICE, carpet.getPrice());
-        values.put(SqliteHelper.PATH, carpet.getPath());
+        values.put(SqliteHelper.PATH, String.valueOf(carpet.getPath()));
         sqLiteDatabase.insert(SqliteHelper.CARPET_TABLE_NAME, null, values);
     }
 

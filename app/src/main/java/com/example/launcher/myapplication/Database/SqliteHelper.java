@@ -11,13 +11,13 @@ public class SqliteHelper extends SQLiteOpenHelper {
     public static final String PATH = "Path";
 
     public SqliteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+        super(context, name, null, 7);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists " + CARPET_TABLE_NAME + " (id, INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + PRICE + " INTEGER," + PATH + " TEXT)");
+        db.execSQL("create table if not exists " + CARPET_TABLE_NAME + "( id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + PRICE + " INTEGER, " + PATH + " TEXT)");
     }
 
     @Override

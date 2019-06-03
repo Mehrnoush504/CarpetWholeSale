@@ -2,9 +2,11 @@ package com.example.launcher.myapplication.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,11 +41,14 @@ public class AvailableCarpetsAdapter extends RecyclerView.Adapter<AvailableCarpe
         Carpet carpet = carpets.get(position);
         String str = carpet.getPrice() + " تومان ";
         holder.priceText.setText(str);
-        File imgFile = new File(this.carpets.get(position).getPath());
-        if (imgFile.exists()) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            holder.carpetImage.setImageBitmap(Bitmap.createScaledBitmap(myBitmap
+        try {
+            Log.i("TAG", String.valueOf(this.carpets.get(position).getPath()));
+            Uri uri = Uri.fromFile(new File(String.valueOf(this.carpets.get(position).getPath())));
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+            holder.carpetImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap
                     , dpToPx(165), dpToPx(150), false));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
