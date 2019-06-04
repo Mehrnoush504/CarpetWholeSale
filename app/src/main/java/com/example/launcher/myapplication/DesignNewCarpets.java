@@ -13,7 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * @author Amir Muhammad
@@ -25,6 +31,7 @@ public class DesignNewCarpets extends Fragment {
     TextView result;
     EditText neighbour1, neighbour2, areas;
     int graph_size = 0, matrix[][];
+    int needed_colors = 0;
     LinkedList<Integer> adjListArray[];
 
 
@@ -49,7 +56,7 @@ public class DesignNewCarpets extends Fragment {
                 matrix = new int[graph_size][graph_size];
                 adjListArray = new LinkedList[graph_size];
                 for (int i = 0; i < graph_size; i++) {
-                    adjListArray[i] =  new LinkedList<>();
+                    adjListArray[i] = new LinkedList<>();
                 }
             }
         });
@@ -65,6 +72,8 @@ public class DesignNewCarpets extends Fragment {
                     return;
                 }
                 joinNodes(node1, node2);
+                neighbour1.clearComposingText();
+                neighbour2.clearComposingText();
             }
         });
         submit.setOnClickListener(new View.OnClickListener() {
@@ -81,26 +90,67 @@ public class DesignNewCarpets extends Fragment {
 
     private void getAnswer() {
         result.clearComposingText();
-        String first_line = getNeededColors() + "\n";
-        result.setText(first_line);
-        writePairs();
-    }
-
-    private void writePairs() {
-//        for (int i = 0; i < graph_size; i++) {
-//
-//        }
-    }
-
-    private String getNeededColors() {
-        int needed = 0;
-        // TODO: Implement graph coloring algorithm
-        return String.valueOf(needed);
+        Hashtable<Integer,Integer> hashtable = greedyColoring();
+        StringBuilder first_line = new StringBuilder("تعداد رنگ مورد نیاز:" + needed_colors+ "\n");
+        result.setText(first_line.toString());
+        for (int i = 0; i < graph_size; i++) {
+            first_line.append("ناحیه " + i + " :" + hashtable.get(i)).append("\n");
+        }
+        result.setText(first_line.toString());
     }
 
     private void joinNodes(Integer node1, Integer node2) {
         adjListArray[node1].add(node2);
         adjListArray[node2].add(node1);
         matrix[node1][node2] = matrix[node2][node1] = 1;
+    }
+
+    private Hashtable<Integer,Integer> greedyColoring() {
+        int result[] = new int[graph_size];
+        Hashtable<Integer,Integer> hashtable = new Hashtable<>();
+        // Initialize all vertices as unassigned
+        Arrays.fill(result, -1);
+
+        // Assign the first color to first vertex
+        result[0] = 0;
+
+        // A temporary array to store the available colors. False
+        // value of available[cr] would mean that the color cr is
+        // assigned to one of its adjacent vertices
+        boolean available[] = new boolean[graph_size];
+
+        // Initially, all colors are available
+        Arrays.fill(available, true);
+
+        // Assign colors to remaining V-1 vertices
+        for (int u = 1; u < graph_size; u++) {
+            // Process all adjacent vertices and flag their colors
+            // as unavailable
+            for (Integer i : adjListArray[u]) {
+                if (result[i] != -1)
+                    available[result[i]] = false;
+            }
+
+            // Find the first available color
+            int cr;
+            for (cr = 0; cr < graph_size; cr++) {
+                if (available[cr])
+                    break;
+            }
+
+            result[u] = cr; // Assign the found color
+            // Reset the values back to true for the next iteration
+            Arrays.fill(available, true);
+        }
+
+        // print the result
+        HashSet<Integer> colors = new HashSet<>();
+        for (int u = 0; u < graph_size; u++) {
+            System.out.println("Vertex " + u + " --->  Color " + result[u]);
+            hashtable.put(u,result[u]);
+            colors.add(result[u]);
+        }
+        needed_colors = colors.size();
+        return hashtable;
     }
 }

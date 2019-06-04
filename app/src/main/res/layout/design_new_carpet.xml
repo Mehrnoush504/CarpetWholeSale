@@ -24,63 +24,74 @@
     <Button
         android:id="@+id/submit"
         android:layout_width="126dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:text="تایید و طراحی"
         app:layout_constraintBottom_toTopOf="@+id/result"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/neighbour2" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="67dp"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="16dp"
         android:text="همسایگی:"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/submit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/areas_count" />
+        app:layout_constraintTop_toBottomOf="@+id/areas_count"
+        app:layout_constraintVertical_bias="0.51" />
 
     <EditText
         android:id="@+id/neighbour1"
         android:layout_width="57dp"
-        android:layout_height="33dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="56dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
-        android:inputType="numberPassword"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/submit"
         app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/areas_count" />
+        app:layout_constraintTop_toBottomOf="@+id/areas_count"
+        app:layout_constraintVertical_bias="0.523" />
 
     <EditText
         android:id="@+id/neighbour2"
         android:layout_width="57dp"
-        android:layout_height="33dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="56dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
-        android:inputType="numberPassword"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/submit"
         app:layout_constraintEnd_toStartOf="@+id/neighbour1"
-        app:layout_constraintTop_toBottomOf="@+id/areas_count" />
+        app:layout_constraintTop_toBottomOf="@+id/areas_count"
+        app:layout_constraintVertical_bias="0.521" />
 
     <Button
         android:id="@+id/submit_neigbouring"
         android:layout_width="61dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:text="تایید همسایگی"
         android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/submit"
         app:layout_constraintEnd_toStartOf="@+id/neighbour2"
-        app:layout_constraintHorizontal_bias="0.387"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/set" />
+        app:layout_constraintTop_toBottomOf="@+id/set"
+        app:layout_constraintVertical_bias="0.471" />
 
     <Button
         android:id="@+id/set"
