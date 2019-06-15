@@ -41,6 +41,7 @@ public class Knapsack {
     }
 
     public Hashtable<Integer, Integer> main(int W, ArrayList<Carpet> arrayList) {
+        //TODO: Knapsack method should be checked again
         int n, HowMany;
         n = arrayList.size();
 

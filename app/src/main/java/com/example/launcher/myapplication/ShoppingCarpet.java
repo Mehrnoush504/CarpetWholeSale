@@ -19,28 +19,26 @@ import com.example.launcher.myapplication.Database.CarpetDBManager;
 import com.example.launcher.myapplication.Models.Carpet;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Hashtable;
 
 public class ShoppingCarpet extends Fragment {
-    Button sumbitMoney;
+    Button submitMoney;
     RecyclerView recyclerView;
     EditText moneyText;
     TextView resText;
     AvailableCarpetsAdapter availableCarpetsAdapter;
     int money = 0;
     public static final String TITLE = "خرید";
-    private CarpetDBManager carpetDBManager;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.shopping_carpet, container, false);
-        sumbitMoney = view.findViewById(R.id.submitMoney);
+        submitMoney = view.findViewById(R.id.submitMoney);
         recyclerView = view.findViewById(R.id.recycler);
         resText = view.findViewById(R.id.resText);
         moneyText = view.findViewById(R.id.moneyeditText);
-        sumbitMoney.setOnClickListener(new View.OnClickListener() {
+        submitMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (moneyText.getText().toString().equals("")) {
@@ -55,10 +53,9 @@ public class ShoppingCarpet extends Fragment {
 
     private void displayRecyclerView(int money) {
         Knapsack knapsack = new Knapsack();
-        carpetDBManager = new CarpetDBManager(getContext());
+        CarpetDBManager carpetDBManager = new CarpetDBManager(getContext());
         carpetDBManager.open();
         ArrayList<Carpet> carpets = carpetDBManager.getALLCarpets();
-        // TODO: arrayList should be caught from database
         Hashtable<Integer,Integer> options = knapsack.main(money, carpets);
         StringBuilder res = new StringBuilder("You can buy " + options.keySet().size() + " carpets.");
         ArrayList<Carpet> available = new ArrayList<>();

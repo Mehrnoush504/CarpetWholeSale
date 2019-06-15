@@ -120,6 +120,9 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
     }
 
     private void getBestWay(double latitude, double longitude) {
+        //TODO:Add the buyer point to the graph and find the nearest node to it.
+        //TODO:Edges must be weighted,according to first-last distances
+
     }
 
     @Override
@@ -145,6 +148,7 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
             Log.e("TAG","Null hastam");
         }
         preProcess();
+
     }
 
     class MapPoint {

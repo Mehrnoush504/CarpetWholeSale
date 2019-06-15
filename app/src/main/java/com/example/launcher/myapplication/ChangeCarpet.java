@@ -137,7 +137,8 @@ public class ChangeCarpet extends Fragment {
     }
 
     private Bitmap convert_to_bitmap(int[] product_arr) {
-        Bitmap bitmap = Bitmap.createBitmap(product_arr.length, product_arr.length, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap((int)Math.sqrt(product_arr.length),
+                (int)Math.sqrt(product_arr.length), Bitmap.Config.ARGB_8888);
         bitmap.copyPixelsFromBuffer(IntBuffer.wrap(product_arr));
         return bitmap;
     }
