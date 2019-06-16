@@ -6,19 +6,18 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.example.launcher.myapplication.Basic.Knapsack;
 import com.example.launcher.myapplication.Adapters.AvailableCarpetsAdapter;
 import com.example.launcher.myapplication.Database.CarpetDBManager;
 import com.example.launcher.myapplication.Models.Carpet;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 
 public class ShoppingCarpet extends Fragment {
@@ -52,25 +51,42 @@ public class ShoppingCarpet extends Fragment {
     }
 
     private void displayRecyclerView(int money) {
-        Knapsack knapsack = new Knapsack();
         CarpetDBManager carpetDBManager = new CarpetDBManager(getContext());
         carpetDBManager.open();
         ArrayList<Carpet> carpets = carpetDBManager.getALLCarpets();
-        Hashtable<Integer,Integer> options = knapsack.main(money, carpets);
-        StringBuilder res = new StringBuilder("You can buy " + options.keySet().size() + " carpets.");
+        Log.i("TAGG", "");
+        for (int i = 0; i < carpets.size(); i++) {
+            Log.i("TAGG", String.valueOf(carpets.get(i).getPrice()));
+        }
+        Collections.sort(carpets);
+        Hashtable<Integer, Integer> options = new Hashtable<>();
+        int weight = 0;
+        for (int i = 0; i < carpets.size(); i++) {
+            if (weight + carpets.get(i).getPrice() <= money) {
+                weight += carpets.get(i).getPrice();
+                if (!options.contains(carpets.get(i))) {
+                    options.put(carpets.get(i).getPrice(), 1);
+                } else {
+                    options.put(carpets.get(i).getPrice(), options.get(carpets.get(i).getPrice()) + 1);
+                }
+            }
+        }
+        StringBuilder res = new StringBuilder("");
         ArrayList<Carpet> available = new ArrayList<>();
         for (Integer key : options.keySet()) {
             int counter = 0;
             for (int i = 0; i < carpets.size(); i++) {
-                if (carpets.get(i).getPrice() == key){
-                    available.add(carpets.get(i));counter++;
+                if (carpets.get(i).getPrice() == key) {
+                    available.add(carpets.get(i));
+                    counter++;
                 }
             }
-            if (counter != 0){
+            if (counter != 0) {
                 res.append("\n").append(counter).append(" carpet with price: ").append(key);
             }
         }
-        resText.setText(res.toString());
+        String msg = "You can buy " + available.size() + " carpets." + res.toString();
+        resText.setText(msg);
         carpetDBManager.close();
         availableCarpetsAdapter = new AvailableCarpetsAdapter(getContext(), available);
         LinearLayoutManager linearLayoutManager =

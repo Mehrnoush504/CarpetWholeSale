@@ -1,5 +1,6 @@
 package com.example.launcher.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,23 +17,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import com.example.launcher.myapplication.Database.CarpetDBManager;
 import com.example.launcher.myapplication.Models.Carpet;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class SearchingCarpets extends Fragment {
     public static final String TITLE = "جستجو";
     private ImageView input_carpet, output1, output2, output3;
-    private Button submit;
     private int GET_IMAGE_CODE_CARPET1 = 101;
     private CarpetDBManager carpetDBManager;
     private int result = 0;
     private int [] Arr;
-    private int[][] bitmap_arr;
     private Bitmap bitmap;
     private int[] bitmap_array;
 
@@ -40,7 +36,7 @@ public class SearchingCarpets extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.searching_carpets, container, false);
-        submit = view.findViewById(R.id.choosebtn);
+        Button submit = view.findViewById(R.id.choosebtn);
         input_carpet = view.findViewById(R.id.incarpet1imageV);
         carpetDBManager = new CarpetDBManager(getContext());
         output1 = view.findViewById(R.id.outcarpet3imageV);
@@ -81,7 +77,7 @@ public class SearchingCarpets extends Fragment {
             Uri uri = Uri.fromFile(new File(carpet.getPath()));
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-                bitmap_arr = convert_to_arr(bitmap);
+                int[][] bitmap_arr = convert_to_arr(bitmap);
                 long likeness = compareImages(arr, bitmap_arr);
                 if (likeness < most_likeness) {
                     bitmap3 = bitmap2;
@@ -114,6 +110,7 @@ public class SearchingCarpets extends Fragment {
         return result;
     }
 
+    @SuppressLint("StaticFieldLeak")
     class Calculator_Helper extends AsyncTask<Void,Void,Void>{
         private int Opt(int[] arr, int[] bitmap_arr, int i, int j) {
             if (i == arr.length) {
