@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import com.example.launcher.myapplication.Basic.QuickSort;
 import com.example.launcher.myapplication.Database.CarpetDBManager;
 import com.example.launcher.myapplication.Models.Carpet;
 import java.io.File;
@@ -28,7 +29,7 @@ public class SearchingCarpets extends Fragment {
     private int GET_IMAGE_CODE_CARPET1 = 101;
     private CarpetDBManager carpetDBManager;
     private int result = 0;
-    private int [] Arr;
+    private int[] Arr;
     private Bitmap bitmap;
     private int[] bitmap_array;
 
@@ -70,67 +71,88 @@ public class SearchingCarpets extends Fragment {
     private void getSimilarImages(int arr[]) {
         carpetDBManager.open();
         ArrayList<Carpet> carpets = carpetDBManager.getALLCarpets();
-        Bitmap bitmap1 = null, bitmap2 = null, bitmap3 = null;
-        long most_likeness = 99999999;
+        ArrayList<Bitmap_Likeness_Pair>arrayList = new ArrayList<>();
         for (int i = 0; i < carpets.size(); i++) {
             Carpet carpet = carpets.get(i);
             Uri uri = Uri.fromFile(new File(carpet.getPath()));
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-                int[][] bitmap_arr = convert_to_arr(bitmap);
-                long likeness = compareImages(arr, bitmap_arr);
-                if (likeness < most_likeness) {
-                    bitmap3 = bitmap2;
-                    bitmap2 = bitmap1;
-                    bitmap1 = bitmap;
-                    most_likeness = likeness;
-                }
-                Log.i("TAG", String.valueOf(likeness));
+                int[][] bitmap_arr = convert_to_arr(Bitmap.createScaledBitmap(bitmap, 30, 40, false));
+                int likeness = compareImages(arr, bitmap_arr);
+                arrayList.add(new Bitmap_Likeness_Pair(i,bitmap,likeness));
+                Log.i("like", String.valueOf(likeness));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        output1.setImageBitmap(bitmap1);
-        output2.setImageBitmap(bitmap2);
-        output3.setImageBitmap(bitmap3);
+        Log.i("TAGG","Size:" + carpets.size());
+        Log.i("TAGG","------------");
+        for (int i = 0; i < arrayList.size(); i++) {
+            Log.i("TAGG", String.valueOf(arrayList.get(i).likeness));
+        }
+        QuickSort quickSort = new QuickSort();
+        Bitmap_Likeness_Pair bitmap_likeness_pair[] = new Bitmap_Likeness_Pair[arrayList.size()];
+        for (int i = 0; i < bitmap_likeness_pair.length; i++) {
+            bitmap_likeness_pair[i] = arrayList.get(i);
+        }
+        bitmap_likeness_pair = quickSort.main(bitmap_likeness_pair);
+        Log.i("TAGG","--------------");
+        for (int i = 0; i < arrayList.size(); i++) {
+            Log.i("TAGG", String.valueOf(bitmap_likeness_pair[i].likeness));
+        }
+        output1.setImageBitmap(bitmap_likeness_pair[bitmap_likeness_pair.length - 1].bitmap);
+        output2.setImageBitmap(bitmap_likeness_pair[bitmap_likeness_pair.length - 2].bitmap);
+        output3.setImageBitmap(bitmap_likeness_pair[bitmap_likeness_pair.length - 3].bitmap);
         carpetDBManager.close();
     }
 
     private int compareImages(int[] arr, int[][] bitmap_2darr) {
-        int bitmap_arr[] = new int[bitmap_2darr.length * bitmap_2darr.length];
-        for (int i = 0; i < bitmap_2darr.length; i++) {
-            for (int j = 0; j < bitmap_2darr.length; j++) {
-                bitmap_arr[i * bitmap_2darr.length + j] = bitmap_2darr[i][j];
+        int bitmap_arr[] = new int[bitmap_2darr[0].length * bitmap_2darr.length];
+        for (int i = 0; i < 40; i++) {
+            for (int j = 0; j < 30; j++) {
+                try {
+                    bitmap_arr[i * 30 + j]
+                            = bitmap_2darr[i][j];
+                } catch (Exception e) {
+                    Log.i("TAGGG", "i:" + i + ",j:" + j);
+                }
             }
         }
-        Log.i("MYTAG",arr.length + ",bitma_arr length: " + bitmap_arr.length);
+        Log.i("MYTAG", arr.length + ",bitmap_arr length: " + bitmap_arr.length);
         Arr = arr;
         bitmap_array = bitmap_arr;
         new Calculator_Helper().execute();
         return result;
     }
 
+
     @SuppressLint("StaticFieldLeak")
-    class Calculator_Helper extends AsyncTask<Void,Void,Void>{
-        private int Opt(int[] arr, int[] bitmap_arr, int i, int j) {
-            if (i == arr.length) {
-                return 2 * (bitmap_arr.length - j);
-            } else if (j == bitmap_arr.length) {
-                return 2 * (arr.length - i);
-            } else {
-                int pen = 3;
-                if (arr[i] == bitmap_arr[j]) {
-                    pen = 0;
-                }
-                Log.i("MYTAG", "):");
-                return Math.min(Opt(arr, bitmap_arr, i + 1, j) + 2, Math.min(Opt(arr, bitmap_arr,
-                        i, j + 1) + 2, Opt(arr, bitmap_arr, i + 1, j + 1) + pen));
+    class Calculator_Helper extends AsyncTask<Void, Void, Void> {
+        private int Opt(int[] arr, int[] bitmap_arr) {
+            int memo[][] = new int[30][40];
+            memo[0][0] = 0;
+            for (int k = 1; k < 40; k++) {
+                memo[0][k] = 2 + memo[0][k - 1];
             }
+            for (int k = 1; k < 30; k++) {
+                memo[k][0] = 2 + memo[k - 1][0];
+            }
+            int pen = 3;
+            for (int k = 1; k < 30; k++) {
+                for (int l = 1; l < 40; l++) {
+                    if (arr[k] == bitmap_arr[l]) {
+                        pen = 0;
+                    }
+                    memo[k][l] = Math.min(memo[k][l - 1] + 2, Math.min(memo[k - 1][l] + 2,
+                            memo[k - 1][l - 1] + pen));
+                }
+            }
+            return memo[29][39];
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            result = Opt(Arr,bitmap_array,0,0);
+            result = Opt(Arr, bitmap_array);
             return null;
         }
     }
@@ -161,6 +183,7 @@ public class SearchingCarpets extends Fragment {
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                     input_carpet.setImageBitmap(bitmap);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 30, 40, false);
                     if (bitmap != null)
                         getSimilar();
                 } catch (Exception e) {
@@ -170,5 +193,15 @@ public class SearchingCarpets extends Fragment {
         }
     }
 
+    public class Bitmap_Likeness_Pair{
+        Bitmap bitmap;
+        int index;
+        public int likeness;
+        Bitmap_Likeness_Pair(int i, Bitmap bitmap, int likeness) {
+            this.bitmap = bitmap;
+            this.index = i;
+            this.likeness = likeness;
+        }
+    }
 
 }
