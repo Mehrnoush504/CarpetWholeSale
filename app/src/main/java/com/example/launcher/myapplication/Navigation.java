@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class Navigation extends Fragment implements OnMapReadyCallback {
 
@@ -140,9 +141,55 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
     private void DrawLine(LatLng coordinates, LatLng coordinates1) {
         mMap.addPolyline(new PolylineOptions().add(coordinates, coordinates1).width(5).color(Color.GREEN));
     }
-
+    private class MapPoints{
+        MapPoint mapPoint;
+        ArrayList<MapPoint> mapPoints;
+        MapPoints(MapPoint mapPoint, ArrayList<MapPoint> mapPoints) {
+            this.mapPoint = mapPoint;
+            this.mapPoints = mapPoints;
+        }
+    }
 
     private void BFS(MapPoint mapPoint, ArrayList<MapPoint> arrayList) {
+        Queue<MapPoints> queue = new LinkedList<>();
+        arrayList.add(mapPoint);
+        ArrayList<MapPoint> visited = new ArrayList<>();
+        queue.add(new MapPoints(mapPoint,arrayList));
+        while (!queue.isEmpty()){
+            MapPoints points = queue.poll();
+            if (points.mapPoint.isBranch) {
+                arrayList = points.mapPoints;
+                for (int i = 0; i < arrayList.size() - 1; i++) {
+                    Log.i("TAGG", "name:" + arrayList.get(i + 1).name);
+                    DrawLine(arrayList.get(i).coordinates, arrayList.get(i + 1).coordinates);
+                }
+
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(arrayList.get(arrayList.size() - 1).coordinates).title("مقصد");
+                mMap.addMarker(markerOptions);
+
+                return;
+            }else{
+                for (int i = 0; i < matrix[points.mapPoint.index].length; i++) {
+                    if (visited.contains(mapPoints[i])){
+                        continue;
+                    }
+                    if (matrix[points.mapPoint.index][i] == 1){
+                        ArrayList<MapPoint>arrayList1 = points.mapPoints;
+                        arrayList1.add(mapPoints[i]);
+                        MapPoints points1 = new MapPoints(mapPoints[i],arrayList1);
+                        visited.add(mapPoints[i]);
+                        queue.add(points1);
+                    }else if (matrix[i][points.mapPoint.index] == 1){
+                        ArrayList<MapPoint>arrayList1 = points.mapPoints;
+                        arrayList1.add(mapPoints[i]);
+                        MapPoints points1 = new MapPoints(mapPoints[i],arrayList1);
+                        visited.add(mapPoints[i]);
+                        queue.add(points1);
+                    }
+                }
+            }
+        }
         if (finished == 1) {
             return;
         }
