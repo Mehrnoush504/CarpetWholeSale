@@ -1,6 +1,7 @@
 package com.example.launcher.myapplication;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -102,23 +103,7 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
 
-//        for (int j = 0; j < matrix.length; j++) {
-//            for (int k = 0; k < matrix[0].length; k++) {
-//                if (matrix[j][k] == 1) {
-//                    mMap.addPolyline(new PolylineOptions().add(new LatLng
-//                                    (mapPoints[j].coordinates.latitude, mapPoints[j].coordinates.longitude),
-//                            new LatLng(mapPoints[k].coordinates.latitude, mapPoints[k].coordinates.longitude))
-//                            .width(5)
-//                            .color(Color.BLUE));
-//                    if (mapPoints[k].name != null) {
-//                        if (mapPoints[j].name != null) {
-//                            Log.e("NAME", "j:" + j + " " + mapPoints[j].name);
-//                        }
-//                        Log.e("NAME", "j:" + j + " " + ",k:" + k + " " + mapPoints[k].name);
-//                    }
-//                }
-//            }
-//        }
+
     }
 
     private void getBestWay(double latitude, double longitude) {
@@ -138,12 +123,33 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
         BFS(mapPoints[index], new ArrayList<MapPoint>());
     }
 
+    int counter = 0;
+
     private void DrawLine(LatLng coordinates, LatLng coordinates1) {
-        mMap.addPolyline(new PolylineOptions().add(coordinates, coordinates1).width(5).color(Color.GREEN));
+        if (counter % 2 == 0) {
+            mMap.addPolyline(new PolylineOptions().add(coordinates, coordinates1).width(5).color(Color.GREEN));
+        } else {
+            mMap.addPolyline(new PolylineOptions().add(coordinates, coordinates1).width(5).color(Color.RED));
+        }
     }
-    private class MapPoints{
+
+    private void DrawAllLines() {
+        for (int j = 0; j < matrix.length; j++) {
+            for (int k = 0; k < matrix[0].length; k++) {
+                if (matrix[j][k] == 1) {
+                    mMap.addPolyline(new PolylineOptions().add(new LatLng
+                                    (mapPoints[j].coordinates.latitude, mapPoints[j].coordinates.longitude),
+                            new LatLng(mapPoints[k].coordinates.latitude, mapPoints[k].coordinates.longitude))
+                            .width(5).color(Color.BLUE));
+                }
+            }
+        }
+    }
+
+    private class MapPoints {
         MapPoint mapPoint;
         ArrayList<MapPoint> mapPoints;
+
         MapPoints(MapPoint mapPoint, ArrayList<MapPoint> mapPoints) {
             this.mapPoint = mapPoint;
             this.mapPoints = mapPoints;
@@ -152,65 +158,43 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
 
     private void BFS(MapPoint mapPoint, ArrayList<MapPoint> arrayList) {
         Queue<MapPoints> queue = new LinkedList<>();
-        arrayList.add(mapPoint);
-        ArrayList<MapPoint> visited = new ArrayList<>();
-        queue.add(new MapPoints(mapPoint,arrayList));
-        while (!queue.isEmpty()){
+        ArrayList<Integer> visited = new ArrayList<>();
+        queue.add(new MapPoints(mapPoint, arrayList));
+        while (!queue.isEmpty()) {
             MapPoints points = queue.poll();
+            visited.add(points.mapPoint.index);
+            arrayList = new ArrayList<>(points.mapPoints);
+            arrayList.add(points.mapPoint);
             if (points.mapPoint.isBranch) {
-                arrayList = points.mapPoints;
                 for (int i = 0; i < arrayList.size() - 1; i++) {
-                    Log.i("TAGG", "name:" + arrayList.get(i + 1).name);
+                    Log.i("points", arrayList.get(i) + " >> " + arrayList.get(i + 1));
                     DrawLine(arrayList.get(i).coordinates, arrayList.get(i + 1).coordinates);
                 }
-
                 MarkerOptions markerOptions = new MarkerOptions()
                         .position(arrayList.get(arrayList.size() - 1).coordinates).title("مقصد");
                 mMap.addMarker(markerOptions);
-
+//                DrawAllLines();
                 return;
-            }else{
+            } else {
+                int past = queue.size();
                 for (int i = 0; i < matrix[points.mapPoint.index].length; i++) {
-                    if (visited.contains(mapPoints[i])){
+                    if (visited.contains(i)) {
                         continue;
                     }
-                    if (matrix[points.mapPoint.index][i] == 1){
-                        ArrayList<MapPoint>arrayList1 = points.mapPoints;
-                        arrayList1.add(mapPoints[i]);
-                        MapPoints points1 = new MapPoints(mapPoints[i],arrayList1);
-                        visited.add(mapPoints[i]);
+                    if (matrix[points.mapPoint.index][i] == 1) {
+                        MapPoints points1 = new MapPoints(mapPoints[i], arrayList);
                         queue.add(points1);
-                    }else if (matrix[i][points.mapPoint.index] == 1){
-                        ArrayList<MapPoint>arrayList1 = points.mapPoints;
-                        arrayList1.add(mapPoints[i]);
-                        MapPoints points1 = new MapPoints(mapPoints[i],arrayList1);
-                        visited.add(mapPoints[i]);
+                    } else if (matrix[i][points.mapPoint.index] == 1) {
+                        MapPoints points1 = new MapPoints(mapPoints[i], arrayList);
                         queue.add(points1);
                     }
                 }
-            }
-        }
-        if (finished == 1) {
-            return;
-        }
-        Log.i("TAGG", "Name:" + mapPoint.name);
-        if (mapPoint.isBranch) {
-            for (int i = 0; i < arrayList.size() - 1; i++) {
-                Log.i("TAGG", "name:" + arrayList.get(i + 1).name);
-                DrawLine(arrayList.get(i).coordinates, arrayList.get(i + 1).coordinates);
-            }
-            finished = 1;
-        } else {
-            for (int i = 0; i < matrix[mapPoint.index].length; i++) {
-                if (matrix[mapPoint.index][i] == 1) {
-                    arrayList.add(mapPoints[i]);
-                    BFS(mapPoints[i], arrayList);
-                } else if (matrix[i][mapPoint.index] == 1) {
-                    arrayList.add(mapPoints[i]);
-                    BFS(mapPoints[i], arrayList);
+                if (past == queue.size()) {
+                    arrayList.remove(points.mapPoint);
                 }
             }
         }
+        Log.i("points", "Not finished");
     }
 
     @Override
@@ -232,9 +216,6 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
                 getBestWay(markerOptions.getPosition().latitude, markerOptions.getPosition().longitude);
             }
         });
-        if (this.mMap == null) {
-            Log.e("TAG", "Null hastam");
-        }
         preProcess();
 
     }
@@ -242,13 +223,23 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
     class MapPoint {
         int index;
         LatLng coordinates;
-        boolean isBranch = false;
+        boolean isBranch;
         String name;
 
         MapPoint(int index, LatLng coordinates, boolean isBranch) {
             this.index = index;
             this.coordinates = coordinates;
             this.isBranch = isBranch;
+        }
+
+        @Override
+        public String toString() {
+            return "MapPoint{" +
+                    "index=" + index +
+                    ", coordinates=" + coordinates +
+                    ", isBranch=" + isBranch +
+                    ", name='" + name + '\'' +
+                    '}';
         }
     }
 }
