@@ -1,7 +1,6 @@
 package com.example.launcher.myapplication;
 
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,20 +14,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import org.json.JSONArray;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -36,7 +27,6 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
 
     public static CharSequence TITLE = "مسیریابی";
     private GoogleMap mMap;
-    private MapView mapView;
     int graph_size = 93, matrix[][];
     MapPoint[] mapPoints = new MapPoint[graph_size];
     LinkedList<Integer> adjListArray[];
@@ -46,7 +36,7 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.navigation, container, false);
-        mapView = view.findViewById(R.id.mapView);
+        MapView mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         mapView.onResume();
@@ -146,7 +136,7 @@ public class Navigation extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private class MapPoints {
+    class MapPoints {
         MapPoint mapPoint;
         ArrayList<MapPoint> mapPoints;
 

@@ -1,6 +1,5 @@
 package com.example.launcher.myapplication;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,19 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
-
-/**
- * @author Amir Muhammad
- */
 
 public class DesignNewCarpets extends Fragment {
     public static String TITLE = "طراحی فرش جدید";
@@ -33,6 +25,7 @@ public class DesignNewCarpets extends Fragment {
     int graph_size = 0, matrix[][];
     int needed_colors = 0;
     LinkedList<Integer> adjListArray[];
+    private boolean be_set = true;
 
 
     @Nullable
@@ -51,6 +44,15 @@ public class DesignNewCarpets extends Fragment {
             public void onClick(View v) {
                 if (areas.getText().toString().equals("") || areas.getText().toString().equals("0")) {
                     return;
+                }
+                if (!be_set) {
+                    be_set = true;
+                    areas.setEnabled(be_set);
+                    set.setText("تنظیم");
+                }else{
+                    be_set = false;
+                    set.setText("طرح جدید");
+                    areas.setEnabled(be_set);
                 }
                 graph_size = Integer.parseInt(areas.getText().toString());
                 matrix = new int[graph_size][graph_size];
@@ -72,8 +74,10 @@ public class DesignNewCarpets extends Fragment {
                     return;
                 }
                 joinNodes(node1, node2);
-                neighbour1.clearComposingText();
-                neighbour2.clearComposingText();
+                Toast.makeText(getContext(),"ناحیه های  " + node1 + " و ناحیه " + node2
+                        + " وصل شدند",Toast.LENGTH_SHORT).show();
+                neighbour1.setText("");
+                neighbour2.setText("");
             }
         });
         submit.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +87,10 @@ public class DesignNewCarpets extends Fragment {
                     return;
                 }
                 getAnswer();
+                be_set = true;
+                areas.setEnabled(be_set);
+                set.setText("طرح جدید");
+                areas.setText("");
             }
         });
         return view;
@@ -90,56 +98,57 @@ public class DesignNewCarpets extends Fragment {
 
     private void getAnswer() {
         result.clearComposingText();
-        Hashtable<Integer,Integer> hashtable = greedyColoring();
-        StringBuilder first_line = new StringBuilder("تعداد رنگ مورد نیاز:" + needed_colors+ "\n");
+        Hashtable<Integer, Integer> hashtable = greedyColoring();
+        Hashtable<Integer, String> getColors = new Hashtable<>();
+        {
+            int i = 0;
+            getColors.put(i, "سبز");
+            getColors.put(i + 1, "قرمز");
+            getColors.put(i + 2, "آبی");
+            getColors.put(i + 3, "بنفش");
+            getColors.put(i + 4, "صورتی");
+            getColors.put(i + 5, "سیاه");
+            getColors.put(i + 6, "سفید");
+            getColors.put(i + 7, "نارنجی");
+            getColors.put(i + 8, "سورمه ای");
+            getColors.put(i + 9, "زرد");
+        }
+        StringBuilder first_line = new StringBuilder("تعداد رنگ مورد نیاز:" + needed_colors + "\n");
         result.setText(first_line.toString());
         for (int i = 0; i < graph_size; i++) {
-            first_line.append("ناحیه " + i + " :" + hashtable.get(i)).append("\n");
+            first_line.append("ناحیه ").append(i).append(" :").append(getColors.get(hashtable.get(i)))
+                    .append("\n");
         }
         result.setText(first_line.toString());
     }
 
     private void joinNodes(Integer node1, Integer node2) {
-        adjListArray[node1].add(node2);
-        adjListArray[node2].add(node1);
+        if (!adjListArray[node1].contains(node2))
+            adjListArray[node1].add(node2);
+        if (!adjListArray[node2].contains(node1))
+            adjListArray[node2].add(node1);
         matrix[node1][node2] = matrix[node2][node1] = 1;
     }
 
-    private Hashtable<Integer,Integer> greedyColoring() {
+    private Hashtable<Integer, Integer> greedyColoring() {
         int result[] = new int[graph_size];
-        Hashtable<Integer,Integer> hashtable = new Hashtable<>();
-        // Initialize all vertices as unassigned
+        Hashtable<Integer, Integer> hashtable = new Hashtable<>();
         Arrays.fill(result, -1);
-
-        // Assign the first color to first vertex
         result[0] = 0;
-
-        // A temporary array to store the available colors. False
-        // value of available[cr] would mean that the color cr is
-        // assigned to one of its adjacent vertices
         boolean available[] = new boolean[graph_size];
-
-        // Initially, all colors are available
         Arrays.fill(available, true);
-
-        // Assign colors to remaining V-1 vertices
         for (int u = 1; u < graph_size; u++) {
-            // Process all adjacent vertices and flag their colors
-            // as unavailable
             for (Integer i : adjListArray[u]) {
                 if (result[i] != -1)
                     available[result[i]] = false;
             }
-
-            // Find the first available color
             int cr;
             for (cr = 0; cr < graph_size; cr++) {
                 if (available[cr])
                     break;
             }
 
-            result[u] = cr; // Assign the found color
-            // Reset the values back to true for the next iteration
+            result[u] = cr;
             Arrays.fill(available, true);
         }
 
@@ -147,7 +156,7 @@ public class DesignNewCarpets extends Fragment {
         HashSet<Integer> colors = new HashSet<>();
         for (int u = 0; u < graph_size; u++) {
             System.out.println("Vertex " + u + " --->  Color " + result[u]);
-            hashtable.put(u,result[u]);
+            hashtable.put(u, result[u]);
             colors.add(result[u]);
         }
         needed_colors = colors.size();

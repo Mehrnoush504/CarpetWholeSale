@@ -167,7 +167,7 @@ public class Strassen {
 
     }
 
-    public int[] main(int arr1[][], int arr2[][]) {
+    public int[] main(Integer arr1[][], Integer arr2[][]) {
         int n = arr1.length;
         ArrayList<ArrayList<Integer>> A = new ArrayList<>(n);
         ArrayList<ArrayList<Integer>> B = new ArrayList<>(n);

@@ -1,10 +1,13 @@
 package com.example.launcher.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -101,50 +104,89 @@ public class ChangeCarpet extends Fragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
+    class WaitingDialog extends AsyncTask<Integer[][], Void, Bitmap> {
+        private ProgressDialog dialog;
+
+        @Override
+        protected Bitmap doInBackground(Integer[][]... integers) {
+            Integer arr1[][] = integers[0];
+            Integer arr2[][] = integers[1];
+            Strassen strassen = new Strassen();
+            int product_arr[] = strassen.main(arr1, arr2);
+            return convert_to_bitmap(product_arr);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(getContext());
+            dialog.setMessage("لطفا منتظر بمانید...");
+            dialog.show();
+            dialog.setCancelable(false);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            product_bitmap = bitmap;
+            product.setImageBitmap(bitmap);
+            super.onPostExecute(bitmap);
+            if (dialog.isShowing())
+                dialog.dismiss();
+        }
+    }
+
     private void setProduct() {
         prepareCarpets();
-        int arr1[][] = convert_to_arr(carpet_bitmap);
-        int arr2[][] = convert_to_arr(filter_bitmap);
-        Strassen strassen = new Strassen();
-        int product_arr[] = strassen.main(arr1, arr2);
-        product_bitmap = convert_to_bitmap(product_arr);
-        product.setImageBitmap(product_bitmap);
+        Integer arr1[][] = convert_to_arr(carpet_bitmap);
+        Integer arr2[][] = convert_to_arr(filter_bitmap);
+        new WaitingDialog().execute(arr1, arr2);
     }
 
     private void prepareCarpets() {
         if (carpet_bitmap.getWidth() > filter_bitmap.getWidth()) {
             if (carpet_bitmap.getHeight() > filter_bitmap.getHeight()) {
-                carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, filter_bitmap.getWidth(), filter_bitmap.getHeight(), false);
+                carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, filter_bitmap.getWidth(),
+                        filter_bitmap.getHeight(), false);
             } else {
-                filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, filter_bitmap.getWidth(), carpet_bitmap.getHeight(), false);
-                carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, filter_bitmap.getWidth(), carpet_bitmap.getHeight(), false);
+                filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, filter_bitmap.getWidth(),
+                        carpet_bitmap.getHeight(), false);
+                carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, filter_bitmap.getWidth(),
+                        carpet_bitmap.getHeight(), false);
             }
         } else {
             if (carpet_bitmap.getHeight() > filter_bitmap.getHeight()) {
-                filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, carpet_bitmap.getWidth(), filter_bitmap.getHeight(), false);
-                carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, carpet_bitmap.getWidth(), filter_bitmap.getHeight(), false);
+                filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, carpet_bitmap.getWidth(),
+                        filter_bitmap.getHeight(), false);
+                carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, carpet_bitmap.getWidth(),
+                        filter_bitmap.getHeight(), false);
             } else {
-                filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, carpet_bitmap.getWidth(), carpet_bitmap.getHeight(), false);
+                filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, carpet_bitmap.getWidth(),
+                        carpet_bitmap.getHeight(), false);
             }
         }
         if (filter_bitmap.getHeight() > filter_bitmap.getWidth()) {
-            filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, filter_bitmap.getWidth(), filter_bitmap.getWidth(), false);
-            carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, carpet_bitmap.getWidth(), carpet_bitmap.getWidth(), false);
+            filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, filter_bitmap.getWidth(),
+                    filter_bitmap.getWidth(), false);
+            carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, carpet_bitmap.getWidth(),
+                    carpet_bitmap.getWidth(), false);
         } else {
-            filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, filter_bitmap.getHeight(), filter_bitmap.getHeight(), false);
-            carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, carpet_bitmap.getHeight(), carpet_bitmap.getHeight(), false);
+            filter_bitmap = Bitmap.createScaledBitmap(filter_bitmap, filter_bitmap.getHeight(),
+                    filter_bitmap.getHeight(), false);
+            carpet_bitmap = Bitmap.createScaledBitmap(carpet_bitmap, carpet_bitmap.getHeight(),
+                    carpet_bitmap.getHeight(), false);
         }
     }
 
     private Bitmap convert_to_bitmap(int[] product_arr) {
-        Bitmap bitmap = Bitmap.createBitmap((int)Math.sqrt(product_arr.length),
-                (int)Math.sqrt(product_arr.length), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap((int) Math.sqrt(product_arr.length),
+                (int) Math.sqrt(product_arr.length), Bitmap.Config.ARGB_8888);
         bitmap.copyPixelsFromBuffer(IntBuffer.wrap(product_arr));
         return bitmap;
     }
 
-    private int[][] convert_to_arr(Bitmap carpet_bitmap) {
-        int arr[][] = new int[carpet_bitmap.getHeight()][carpet_bitmap.getWidth()];
+    private Integer[][] convert_to_arr(Bitmap carpet_bitmap) {
+        Integer arr[][] = new Integer[carpet_bitmap.getHeight()][carpet_bitmap.getWidth()];
         for (int i = 0; i < carpet_bitmap.getHeight(); i++) {
             for (int j = 0; j < carpet_bitmap.getWidth(); j++) {
                 arr[i][j] = carpet_bitmap.getPixel(j, i);
